@@ -1,0 +1,10 @@
+{
+  "development": {
+    "username": "root",
+    "password": "aditya@123",
+    "database": "Flights_search_service",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+  
+}
