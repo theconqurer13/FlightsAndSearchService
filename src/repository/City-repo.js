@@ -49,4 +49,4 @@ class CityRepository{
         }
     }
 }
-module.export= CityRepository;
+module.exports= CityRepository;
