@@ -26,12 +26,15 @@ class CityRepository{
     }
     async getCity(cityId){
         try{
-             const city = await City.findByPK(cityId);
+             const city = await City.findOne({
+                where: { id: cityId },
+                attributes: ["id", "name", "createdAt", "updatedAt"]
+             });
              return city;
             
         }catch(error){
-            console.log("Error ar repository lvl");
-            throw {error};
+            console.log("Error ar repository lvl  ",error);
+            // throw {error};
         }
     }
     async updateCity(cityId,data){
@@ -41,11 +44,19 @@ class CityRepository{
                     id: cityId
                 }
              });
-             return city;
+             if (city === 0) {
+                throw new Error("City not found or data unchanged");
+            }
+    
+            const updatedcity = await City.findOne({
+                where: { id: cityId },
+                attributes: ["id", "name", "createdAt", "updatedAt"]
+             });
+             return updatedcity;
             
         }catch(error){
-            console.log("Error ar repository lvl");
-            throw {error};
+            console.log("Error ar repository lvl ",error);
+            // throw {error};
         }
     }
 }
