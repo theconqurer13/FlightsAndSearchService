@@ -11,7 +11,7 @@ class CityService {
             const city = await this.cityRepository.createCity(data);
             return city;
         } catch (error) {
-            console.log("Err at sevice lvl");
+            console.log("Err at sevice lvl",error);
             throw {error};
         }
     }

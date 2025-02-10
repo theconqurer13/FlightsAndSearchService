@@ -3,15 +3,15 @@ const cityService = new CityService();
 const create = async (req,res) => {
     // during creation , type of req is POST req nd data we get through req.body
     try {
-        const city = await cityService.createCity(req.body);
+        const cities = await cityService.createCity(req.body);
         return res.status(201).json({
-            data:city,
+            data:cities,
             success:true,
             message:'Successfully created a city',
             err:{}
         });
     } catch (error) {
-        console.log("Err on cntoller lvl");
+        console.log("Err on cntoller lvl",error);
         return res.status(500).json({
             data:{},
             success:false,
@@ -51,7 +51,7 @@ const get = async (req,res) => {
             err:{}
         });
     } catch (error) {
-        console.log("Err on cntoller lvl");
+        console.log("Err on cntoller lvl", error);
         return res.status(500).json({
             data:{},
             success:false,
