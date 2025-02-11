@@ -3,12 +3,40 @@ const airportService = new AirportService();
 const create = async (req,res) => {
     // during creation , type of req is POST req nd data we get through req.body
     try {
-        const airports = await airportService.createAirport(req.body);
+
+        // console.log("Request Body:", req.body); 
+        // const { name, cityId } = req.body;
+        // const parsedCityId = parseInt(cityId, 10);
+        // if (!name) {
+        //     return res.status(400).json({ error: "Airport name is required" });
+        // }
+        // if (!parsedCityId) {
+        //     return res.status(400).json({ error: "city id is required" });
+        // }
+        // const airports = await airportService.createAirport({name,parsedCityId});
+        // return res.status(201).json({
+        //     data:airports,
+        //     success:true,
+        //     message:'Successfully created an Airport',
+        //     err:{}
+        // });
+
+
+        console.log("Request Body:", req.body); // 🔍 Debugging Line
+        
+        const { name, cityId } = req.body;
+
+        if (!name || !cityId) {
+            console.log("❌ Missing Fields: ", { name, cityId });
+            return res.status(400).json({ error: "Airport name and cityId are required" });
+        }
+
+        const airports = await airportService.createAirport(name, cityId);
         return res.status(201).json({
-            data:airports,
-            success:true,
-            message:'Successfully created an Airport',
-            err:{}
+            data: airports,
+            success: true,
+            message: "Successfully created an Airport",
+            err: {},
         });
     } catch (error) {
         console.log("Err on cntoller lvl",error);

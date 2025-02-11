@@ -1,9 +1,22 @@
-const {Airport} = require('../models/airport');
+const {Airport,City} = require("../models/index");
 
 class AirportRepository{
-    async createAirport(name){
+    async createAirport(name,cityId){
         try {
-            const airport = await Airport.create({name});
+            if (!name || !cityId) {
+                throw new Error("Missing required fields: name or cityId");
+            }
+            const parsedCityId = parseInt(cityId, 10);
+        if (isNaN(parsedCityId)) {
+            throw new Error("Invalid cityId, must be a number");
+        }
+
+        // Check if city exists before creating airport
+        const cityExists = await City.findByPk(parsedCityId);
+        if (!cityExists) {
+            throw new Error("City with given ID does not exist");
+        }
+            const airport = await Airport.create({name,cityId : parsedCityId});
             return airport;
         } catch (error) {
             console.log("Error at repo lvl",error);
@@ -37,22 +50,18 @@ class AirportRepository{
     }
     async updateAirport(airportId,data){
         try {
-            const airport = await Airport.update(data,{
-                where:{
-                    id:airportId
-                }
-            });
-            if (airport === 0) {
-                throw new Error("Airport not found or data unchanged");
-            }
-            const updatedairport = await Airport.findOne({
+            const [updatedRows] = await Airport.update(data, {
                 where: { id: airportId }
-                // attributes: ["id", "name", "createdAt", "updatedAt"]
-             });
-            return updatedairport; 
+            });
+    
+            if (updatedRows === 0) {
+                throw new Error("Airport not found or no changes applied");
+            }
+    
+            return await Airport.findByPk(airportId);
         } catch (error) {
-            console.log("Error at repo lvl",error);
-            throw{error};
+            console.log("Error at repo lvl", error);
+            throw { error };
         }
     }
 }

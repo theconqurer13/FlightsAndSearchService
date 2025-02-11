@@ -6,9 +6,9 @@ class AirportService {
         this.airportRepository = new AirportRepository();
     }
 
-    async createAirport(data){
+    async createAirport(name,cityId){
         try {
-            const airport = await this.airportRepository.createAirport(data);
+            const airport = await this.airportRepository.createAirport(name,cityId);
             return airport;
         } catch (error) {
             console.log("Err at sevice lvl",error);
